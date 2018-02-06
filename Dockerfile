@@ -28,16 +28,15 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Add an index.php page
 COPY index.php /index.php
 
-# Add the launch script which checks if the /mapr mountpoint is available in the container
-ADD launch.sh /launch.sh
-RUN sudo chmod +x /launch.sh
-
 # Change user & group from apache to nginx
 RUN sed -ie "s|user = apache|user = nginx|g" /etc/php-fpm.d/www.conf
 RUN sed -ie "s|group = apache|group = nginx|g" /etc/php-fpm.d/www.conf
+
+# Add the launch script which checks if the /mapr mountpoint is available in the container
+ADD launch.sh /launch.sh
+RUN sudo chmod +x /launch.sh
 
 EXPOSE 80
 
 # Launch PHP and nginx
 CMD /launch.sh
-CMD /bin/bash
